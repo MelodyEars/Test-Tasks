@@ -1,24 +1,27 @@
-
 from collections import deque
 
+from loguru import logger
 
-def cipher_msg(encrypted_msg: dict, key_list: list):
-	chiphered_msg = ""
-	key_list.sort()
-	while len(msg) > 0:
-		for key in key_list:
-			chiphered_msg += encrypted_msg[key]
-			print(chiphered_msg)
 
+def shuffle_msg(key_list: list, msg: list) -> list:
+	len_key = len(key_list)
+	chiphered_msg = []
+
+	steep_count = len_key
+	num = len_key
+
+	step_msg = msg[:num]  # ['LL', 'O', 'HE']
+
+	while step_msg:
+		for count, key in enumerate(key_list):  # key_list = [2, 3, 1]
+			chiphered_msg.insert(key - 1, step_msg[count])
+
+		resent_num = num
+		num += steep_count
+		step_msg = msg[resent_num:num]
+
+	print(chiphered_msg)
 	return chiphered_msg
-
-def shuffle_msg(key_list: list, msg: deque) -> dict:
-	encrypted_msg = {}
-	while len(msg) > 0:
-		for key in key_list:
-			encrypted_msg[key] = msg.popleft()
-
-	return encrypted_msg
 
 
 def create_list_with_digraph(msg):
@@ -39,18 +42,17 @@ def create_list_with_digraph(msg):
 		step_msg = msg[resent_num:num]
 
 	print(msg_list)
-	return deque(msg_list)
+	return msg_list
 
 
 if __name__ == '__main__':
-	key_list = [2, 3, 1]
-	msg = "LLOHE"
-	# keys = input('Enter the key via space: ').split()
-	# msg = input('Enter the message: ')
-	# key_list = list(map(int, keys))
+	# key_list = [2, 3, 1]
+	# msg = "LLOHE"
+	keys = input('Enter the key via space: ').split()
+	msg = input('Enter the message: ')
+	key_list = list(map(int, keys))
 
 	list_with_digraph = create_list_with_digraph(msg)
-	encrypted_msg = shuffle_msg(key_list=key_list, msg=list_with_digraph)
-	chiphered_msg = cipher_msg(encrypted_msg=encrypted_msg, key_list=key_list)
+	chiphered_msg = shuffle_msg(key_list=key_list, msg=list_with_digraph)
 
-	print(chiphered_msg)
+	logger.warning("".join(chiphered_msg))
