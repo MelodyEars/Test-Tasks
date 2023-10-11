@@ -1,26 +1,24 @@
 
+from collections import deque
 
-def solve(key: list, msg: list):
-	# список, куди буде записано дешифроване повідомлення. Спочатку він ініціалізується таким самим, як msg.
-	decrypted = msg
 
-	# Проходимо циклом по всіх символах повідомлення msg.
-	for i, char in enumerate(msg):
-		# беремо номер символу ключа key_index за модулем довжини ключа
-		key_index = i % len(key)
+def cipher_msg(encrypted_msg: dict, key_list: list):
+	chiphered_msg = ""
+	key_list.sort()
+	while len(msg) > 0:
+		for key in key_list:
+			chiphered_msg += encrypted_msg[key]
+			print(chiphered_msg)
 
-		# беремо загальний індекс за формулою:
-		# index = (кількість повних циклів по ключу) * (довжина ключа) + (номер символу ключа)
-		index = (round(i / len(key)) * len(key)) + key[key_index]
+	return chiphered_msg
 
-		# Записуємо символ у decrypted за обчисленим індексом.
-		decrypted[index - 1] = char
+def shuffle_msg(key_list: list, msg: deque) -> dict:
+	encrypted_msg = {}
+	while len(msg) > 0:
+		for key in key_list:
+			encrypted_msg[key] = msg.popleft()
 
-		# Виводимо для зручності, куди потрапив символ.
-		print(f'{char}, at index {i}, goes in destination index {index - 1} (letter number {index})')
-
-	# з'єднуємо символи і отримуємо дешифроване повідомлення.
-	print(''.join(decrypted))
+	return encrypted_msg
 
 
 def create_list_with_digraph(msg):
@@ -41,7 +39,7 @@ def create_list_with_digraph(msg):
 		step_msg = msg[resent_num:num]
 
 	print(msg_list)
-	return msg_list
+	return deque(msg_list)
 
 
 if __name__ == '__main__':
@@ -52,4 +50,7 @@ if __name__ == '__main__':
 	# key_list = list(map(int, keys))
 
 	list_with_digraph = create_list_with_digraph(msg)
-	solve(key=key_list, msg=list_with_digraph)
+	encrypted_msg = shuffle_msg(key_list=key_list, msg=list_with_digraph)
+	chiphered_msg = cipher_msg(encrypted_msg=encrypted_msg, key_list=key_list)
+
+	print(chiphered_msg)
