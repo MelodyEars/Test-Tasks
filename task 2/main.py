@@ -1,16 +1,41 @@
-# This is a sample Python script.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+NEW_ELEMENTS = 3
+
+def reducer(sequence1):
+	sequence2 = []
+
+	for i in range(len(sequence1) - 1):
+		sequence2.append(sequence1[i + 1] - sequence1[i])
+
+	return sequence2
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def adder(sequence, step):
+	for i in range(NEW_ELEMENTS):
+		sequence.append(sequence[-1] + step)
+
+	return sequence
+
+def calculator(msg):
+	dict_sequence = {"1": msg}
+
+	for key, sequence in dict_sequence.items():
+		result_1 = sequence[1] - sequence[0]
+		result_2 = sequence[2] - sequence[1]
+
+		if result_2 == result_1:
+			for i in dict_sequence.keys():
+				dict_sequence[i] = dict_sequence[i] + adder(sequence, result_1)
+
+		else:
+			dict_sequence[int(key) + 1] = reducer(sequence)
+
+	return dict_sequence["1"][-3:]
+
+			# решить рекурсией, глобальная преремен для словаря и рекурсивно функцией вьісщитьівать разницу
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+	msg = [15, 32, 57, 90, 131, 180]
+	# msg = [12, 14, 16, 18, 20]
+	print(calculator(msg))
