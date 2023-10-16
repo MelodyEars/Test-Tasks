@@ -1,37 +1,24 @@
-
-
-def shuffle_msg(key_list: list, msg: list):
+def shuffle_msg(key_list, msg):
 	"""
-	Shuffles the characters in a message according to a given key list.
-	Args:
-	    key_list (list): The list of keys to shuffle the message.
-	    msg (list): The message to be shuffled.
-	Returns:
-	    list: The shuffled message.
-	"""
-	# Create a dictionary with keys from key_list and empty lists as values
-	key_to_list = {key: [] for key in sorted(key_list)}
-	# Determine the number of iterations needed to shuffle the message
-	steep_count = len(key_list)
-	num = steep_count
-	# Extract the initial portion of the message to be shuffled
-	step_msg = msg[:num]
+    Shuffle the characters in the message based on a given key list.
+    Args:
+        key_list (list): A list of keys used for shuffling the characters.
+        msg (str): The message to be shuffled.
+    Returns:
+        str: The shuffled message.
+    """
 
-	# Shuffle the message by assigning characters to the appropriate key
-	while step_msg:
-		for i, key in enumerate(key_list):
-			if i < len(step_msg):  # If there are characters left in the message
-				key_to_list[key].append(step_msg[i])  # Add the character to the list
-
-		# Update the indexes for the next portion of the message
-		resent_num = num
-		num += steep_count
-		step_msg = msg[resent_num:num]
-
-	# Join the characters in the shuffled lists and sort them by key
-	chiphered_msg = ''.join([''.join(value) for key, value in sorted(key_to_list.items())])
-
-	# Return the shuffled message
+	# Create a dictionary with empty lists for each key in the key list
+	key_to_list = {key: [] for key in key_list}
+	# Iterate over each character in the message
+	for i, char in enumerate(msg):
+		# Get the key for the current character based on its position in the key list
+		key = key_list[i % len(key_list)]
+		# Append the character to the list associated with the key
+		key_to_list[key].append(char)
+	# Join the characters in each list, sort the lists based on their keys,
+	# and join the resulting strings to form the shuffled message
+	chiphered_msg = ''.join(''.join(value) for key, value in sorted(key_to_list.items()))
 	return chiphered_msg
 
 
@@ -62,6 +49,8 @@ def create_list_with_digraph(msg):
 
 
 if __name__ == '__main__':
+	# keys = [3, 4, 1, 2]
+	# msg = "THISISJUSTATEST"
 	keys = input('Enter the key via space: ').split()
 	msg = input('Enter the message: ')
 	key_list = list(map(int, keys))
@@ -70,4 +59,3 @@ if __name__ == '__main__':
 	chiphered_msg = shuffle_msg(key_list=key_list, msg=list_with_digraph)
 
 	print(chiphered_msg)
-
