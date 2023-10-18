@@ -1,10 +1,8 @@
 def reducer(sequence: list) -> list:
 	"""
 	Calculate the difference between consecutive elements in a sequence.
-
 	Args:
 		sequence (list): The input sequence.
-
 	Returns:
 		list: A list of differences between consecutive elements.
 	"""
